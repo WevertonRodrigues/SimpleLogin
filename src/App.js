@@ -1,23 +1,52 @@
-import React, { Component } from 'react';
-import { Button, TextField, makeStyles, Card } from '@material-ui/core';
-import { Link } from 'react-router-dom';
-import './App.css';
+import React from 'react';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import Paper from '@material-ui/core/Paper'
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
+  '@global': {
+    body: {
+      backgroundColor: theme.palette.common.white,
+    },
   },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    width: 200,
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(3),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%',
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+  main: {
+    backgroundColor: theme.palette.common.white,
   },
 }));
 
-const classes = useStyles();
+function myHook(Component) {
+  return function WrappedComponent(props) {
+    const classes = useStyles();
+    return <Component {...props} class={classes} />;
+  }
+}
 
 class App extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -27,7 +56,7 @@ class App extends React.Component {
     this.handleUser = this.handleUser.bind(this);
     this.handlePass = this.handlePass.bind(this);
   }
-  
+
   handleUser = (event) => {
     this.setState({ user: event.target.value })
   }
@@ -37,40 +66,60 @@ class App extends React.Component {
   }
 
   render() {
+    const classes = this.props.class;
     return (
-      <div>
-        <form className={classes.container} noValidate autoComplete="off">          
-            <h1> LOGIN </h1>
-            <TextField
-              label="Username"
-              margin="normal"
-              variant="outlined"
-              type="text"
-              onChange={this.handleUser}
-              value={this.state.user}
-              className={classes.textField}
-              margin="normal"
-              helperText="Required"
-            />
-            <br />
-            <TextField
-              label="Password"
-              margin="normal"
-              variant="outlined"
-              type="password"
-              onChange={this.handlePass}
-              value={this.state.pass}
-              className={classes.textField}
-              margin="normal"
-              helperText="Required"
-            />
-            <br />
-            <Button variant="contained" color="primary" type="button"
-              component={Link} to={{ pathname: '/perfil', state: { user: this.state.user } }} > Login</Button>
-        </form>
-      </div>
+      <Container className="main" component="main" maxWidth="md">
+        <Paper >
+          <Container maxWidth="md">
+            <CssBaseline />
+            <div className={classes.paper}>
+              <Avatar className={classes.avatar}>
+                <LockOutlinedIcon />
+              </Avatar>
+              <Typography component="h1" variant="h5">
+                Log In
+              </Typography>
+              <form className={classes.form} noValidate>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  label="Email Address"
+                  autoFocus
+                  onChange={this.handleUser}
+                  value={this.state.user}
+                />
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  label="Password"
+                  type="password"
+                  id="password"
+                  onChange={this.handlePass}
+                  value={this.state.pass}
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  component={Link} to={{ pathname: '/perfil', state: { user: this.state.user } }}
+                >
+                  Log In
+            </Button>
+              </form>
+            </div>
+          </Container>
+        </Paper>
+      </Container>
     );
   }
 }
+
+App = myHook(App);
 
 export default App;

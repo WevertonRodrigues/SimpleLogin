@@ -1,22 +1,50 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import {Button} from '@material-ui/core';
-
+import { Paper, Button, Typography, Container, makeStyles } from '@material-ui/core';
 import './App.css';
 
-class Perfil extends Component {
-   
+const useStyles = makeStyles(theme => ({
+    button: {
+        margin: theme.spacing(3, 0, 2),
+    },
+    mainP:{
+        marginTop: theme.spacing(10),
+    },
+    paper: {
+        marginTop: theme.spacing(3),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+
+
+}));
+
+function myHook(Component) {
+    return function WrappedComponent(props) {
+      const classes = useStyles();
+      return <Component {...props} class={classes} />;
+    }
+  }
+
+class Perfil extends React.Component {
+
     render() {
-        var user = this.props.location.state.user;    
+        const user = this.props.location.state.user;
+        const classes = this.props.class;
         return (
-            <div className='App'>
-                <h1 className='App-title'>Página de Perfil de {user}</h1>
-                <p className='App-intro'>
-                    Exemplo de Página Perfil :)
-                </p>
-                <Button variant="outlied" color="primary" type="button" component={Link} to="/">Voltar para login</Button>
-            </div>
+            <Container className={classes.mainP} component="main" maxWidth="lg">
+                <Paper className={classes.paper}>
+                    <Typography align="center">Welcome, {user}</Typography>
+                    <Container className={classes.button} maxWidth='xs'>
+                        <Button variant="contained" fullWidth="true" color="primary" type="button" component={Link} to="/">Back to Log In</Button>
+                    </Container>
+                </Paper>
+            </Container>
         );
     }
 }
+
+Perfil = myHook(Perfil);
+
 export default Perfil;
