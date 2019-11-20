@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(6, 0, 5),
   },
   main: {
     backgroundColor: theme.palette.common.white,
@@ -53,16 +53,14 @@ class App extends React.Component {
       user: '',
       pass: '',
     }
-    this.handleUser = this.handleUser.bind(this);
-    this.handlePass = this.handlePass.bind(this);
   }
 
-  handleUser = (event) => {
-    this.setState({ user: event.target.value })
-  }
-
-  handlePass = (event) => {
-    this.setState({ pass: event.target.value })
+  handleUserInput = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    this.setState({
+      [name]: value
+    });
   }
 
   render() {
@@ -79,27 +77,28 @@ class App extends React.Component {
               <Typography component="h1" variant="h5">
                 Log In
               </Typography>
-              <form className={classes.form} noValidate>
+              <form className={classes.form}>
                 <TextField
                   variant="outlined"
                   margin="normal"
-                  required
                   fullWidth
-                  label="Email Address"
+                  label="Username"
+                  name="user"
                   autoFocus
-                  onChange={this.handleUser}
+                  onChange={(event) => this.handleUserInput(event)}
                   value={this.state.user}
+                  color="secondary"
                 />
                 <TextField
                   variant="outlined"
                   margin="normal"
-                  required
                   fullWidth
                   label="Password"
+                  name="pass"
                   type="password"
-                  id="password"
-                  onChange={this.handlePass}
+                  onChange={(event) => this.handleUserInput(event)}
                   value={this.state.pass}
+                  color="secondary"
                 />
                 <Button
                   type="submit"
@@ -108,6 +107,7 @@ class App extends React.Component {
                   color="primary"
                   className={classes.submit}
                   component={Link} to={{ pathname: '/perfil', state: { user: this.state.user } }}
+                  color="secondary"
                 >
                   Log In
             </Button>
